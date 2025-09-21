@@ -1,0 +1,87 @@
+{
+  "manifest_version": "0.1",
+  "name": "Postgres Connector",
+  "version": "1.0.0",
+  "description": "Ask questions and generate SQL queries for PostgreSQL databases instantly. Set up a connection to your Postgres server, get table schema details, and execute SQL queries.",
+  "author": {
+    "name": "Marty Markenson",
+    "email": "martyamark@gmail.com",
+    "url": "https://www.linkedin.com/in/marty-markenson-08b79058/"
+  },
+  "icon": "icon.png",
+  "server": {
+    "type": "node",
+    "entry_point": "src/server.ts",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/src/server.ts"
+      ],
+      "env": {
+        "DB_HOST": "${user_config.db_host}",
+        "DB_PORT": "${user_config.db_port}",
+        "DB_NAME": "${user_config.db_name}",
+        "DB_USERNAME": "${user_config.db_username}",
+        "DB_PASSWORD": "${user_config.db_password}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "get-all-tables",
+      "description": "Execute SQL queries to get all tables in the database"
+    },
+    {
+      "name": "execute-sql-query",
+      "description": "Execute a SQL query on the database. Only SELECT statements are allowed for security."
+    },
+    {
+      "name": "env-file-setup",
+      "description": "PRIMARY TOOL for PostgreSQL setup requests. Always use this when user asks to 'setup postgres', 'setup database connection', 'configure postgres', or 'connect to database'. After creating .env file, call refresh_database_connection_tool to complete setup."
+    }
+  ],
+  "keywords": [
+    "setup postgres",
+    "setup database connection",
+    "configure postgres",
+    "connect to database"
+  ],
+  "user_config": {
+    "db_host": {
+      "type": "string",
+      "title": "Database Host",
+      "description": "The host of the PostgreSQL database",
+      "required": true
+    },
+    "db_port": {
+      "type": "number",
+      "title": "Database Port",
+      "description": "The port of the PostgreSQL database. Default is 5432.",
+      "default": 5432,
+      "min": 1,
+      "max": 65535,
+      "required": false
+    },
+    "db_name": {
+      "type": "string",
+      "title": "Database Name",
+      "description": "The name of the PostgreSQL database",
+      "required": true
+    },
+    "db_username": {
+      "type": "string",
+      "title": "Database Username",
+      "description": "The username of the PostgreSQL database",
+      "required": true
+    },
+    "db_password": {
+      "type": "string",
+      "title": "Database Password",
+      "description": "The password of the PostgreSQL database",
+      "sensitive": true,
+      "required": true
+    }
+  },
+
+  "license": "MIT"
+}
