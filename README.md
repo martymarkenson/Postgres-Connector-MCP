@@ -1,4 +1,6 @@
 # PostgreSQL MCP Server
+<img src="icon.png" alt="Postgres Icon" width="150"/>
+
 
 An MCP (Model Context Protocol) server for querying a PostgreSQL database. Execute SQL queries, view table details, and manage database connections through MCP-compatible clients.
 
