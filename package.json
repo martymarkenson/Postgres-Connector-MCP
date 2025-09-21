@@ -19,19 +19,41 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/martymarkenson/postgres-connector.git"
+    "url": "https://github.com/martymarkenson/Postgres-Connector-MCP.git"
   },
+  "homepage": "https://github.com/martymarkenson/Postgres-Connector-MCP",
+  "bugs": {
+    "url": "https://github.com/martymarkenson/Postgres-Connector-MCP/issues"
+  },
+  "main": "src/server.ts",
+  "bin": {
+    "postgres-connector": "src/server.ts"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "src/",
+    "server.json",
+    "manifest.json",
+    "icon.png",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "start": "tsx src/server.ts"
+    "start": "tsx src/server.ts",
+    "validate": "node validate-server.js",
+    "prepublishOnly": "npm run validate"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.18.1",
-    "postgres": "^3.4.7",
     "dotenv": "^17.2.2",
+    "postgres": "^3.4.7",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "tsx": "^4.20.5",
-    "@types/node": "^24.5.2"
+    "@types/node": "^24.5.2",
+    "ajv-cli": "^5.0.0",
+    "tsx": "^4.20.5"
   }
 }
