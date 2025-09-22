@@ -18,12 +18,14 @@ const server = new McpServer({
 
 // Helper to create DB connection
 const getDb = () => {
+
   const db = postgres({
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT || '5432'),
         database: process.env.DB_NAME,
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
+        ssl:true
       });
   return db;
 };
