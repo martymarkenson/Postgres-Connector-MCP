@@ -1,6 +1,7 @@
 {
   "name": "postgres-connector",
   "version": "1.0.0",
+  "mcpName": "io.github.martymarkenson/postgres-connector",
   "description": "An MCP (Model Context Protocol) server for querying PostgreSQL databases. Execute SQL queries, view table details, and manage database connections through MCP-compatible clients.",
   "author": {
     "name": "Marty Markenson",
@@ -41,9 +42,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "start": "tsx src/server.ts",
-    "validate": "node validate-server.js",
-    "prepublishOnly": "npm run validate"
+    "start": "tsx src/server.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.18.1",
