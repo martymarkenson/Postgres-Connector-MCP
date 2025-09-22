@@ -1,37 +1,16 @@
 {
-  "$schema": "https://registry.model-context-protocol.io/v1/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
   "name": "io.github.martymarkenson/postgres-connector",
+  "description": "MCP server for querying PostgreSQL databases",
   "version": "1.0.0",
-  "description": "An MCP (Model Context Protocol) server for querying PostgreSQL databases. Execute SQL queries, view table details, and manage database connections through MCP-compatible clients.",
-  "license": "MIT",
-  "author": {
-    "name": "Marty Markenson",
-    "email": "martyamark@gmail.com",
-    "url": "https://www.linkedin.com/in/marty-markenson-08b79058/"
-  },
-  "homepage": "https://github.com/martymarkenson/Postgres-Connector-MCP",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/martymarkenson/Postgres-Connector-MCP.git"
-  },
-  "deployment": {
-    "type": "package",
-    "package": {
-      "type": "npm",
-      "name": "postgres-connector",
-      "version": "1.0.0"
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "postgres-connector",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
     }
-  },
-  "keywords": [
-    "mcp",
-    "postgresql",
-    "postgres",
-    "database",
-    "sql",
-    "claude",
-    "model-context-protocol"
-  ],
-  "categories": [
-    "database"
   ]
 }

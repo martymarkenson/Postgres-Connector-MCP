@@ -2,96 +2,143 @@
 
 This document outlines how to publish the PostgreSQL MCP server to the Model Context Protocol registry.
 
-## Setup Complete! 🎉
-
-The following files have been created/updated for automated MCP registry publishing:
-
-- `server.json` - MCP registry configuration
-- `.github/workflows/publish-mcp.yml` - GitHub Actions workflow for automated publishing
-- `package.json` - Updated with NPM publishing configuration
-- `validate-server.js` - Custom validation script
-
-## Required Secrets
-
-Before publishing, you need to set up the following secrets in your GitHub repository:
-
-### 1. NPM Token
-1. Go to [npmjs.com](https://npmjs.com) and create an account if you don't have one
-2. Generate an access token: Profile → Access Tokens → Generate New Token
-3. Choose "Automation" type for CI/CD
-4. Add the token to GitHub Secrets as `NPM_TOKEN`:
-   - Go to your repository on GitHub
-   - Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: `NPM_TOKEN`
-   - Value: Your NPM token
-
 ## Publishing Process
 
-### Automated Publishing (Recommended)
-1. **Create and push a version tag**:
+### Step 1: Install MCP Publisher CLI
+
+**⚠️ Important**: The Homebrew version has known issues. Build from source for best results:
+
+```bash
+# Install Go (required for building)
+brew install go
+
+# Clone and build latest version
+cd ..  # Navigate outside your project directory
+git clone https://github.com/modelcontextprotocol/registry
+cd registry
+make publisher
+
+# Use the built version
+cd ../your-project-directory
+../registry/bin/mcp-publisher --version
+```
+
+Alternative (may have issues):
+```bash
+brew install mcp-publisher  # Older version with known bugs
+```
+
+### Step 2: Update package.json
+Add the required `mcpName` field to your `package.json`:
+```json
+{
+  "name": "postgres-connector",
+  "version": "1.0.0",
+  "mcpName": "io.github.martymarkenson/postgres-connector"
+}
+```
+
+### Step 3: Configure server.json
+Create/update `server.json` with the correct format (note the required `transport` field):
+```json
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+  "name": "io.github.martymarkenson/postgres-connector",
+  "description": "MCP server for querying PostgreSQL databases",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "postgres-connector",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
+```
+
+### Step 4: Authenticate and Publish
+```bash
+# Login to NPM (one-time setup)
+npm login  # Follow browser authentication
+
+# Publish to NPM
+npm publish
+
+# Login to MCP registry (one-time setup)
+../registry/bin/mcp-publisher login github  # Follow browser authentication
+
+# Publish to MCP registry
+../registry/bin/mcp-publisher publish
+```
+
+## Final Results ✅
+
+### Successfully Published
+1. ✅ **NPM Package**: Available at https://www.npmjs.com/package/postgres-connector
+2. ✅ **MCP Registry**: Listed as `io.github.martymarkenson/postgres-connector`
+3. ✅ **Server ID**: `5fe9408b-2370-41fb-90f9-3fce961c0968`
+4. ✅ **Discoverable**: Searchable in the MCP registry
+
+### Solution to Publishing Issues
+The Homebrew version of `mcp-publisher` had schema compatibility issues. **Building from source resolved all problems** and enabled successful publication to the MCP registry.
+
+### Verification
+You can verify the publication:
+```bash
+curl "https://registry.modelcontextprotocol.io/v0/servers?search=postgres-connector"
+```
+
+## Using the NPM Package
+
+Even without MCP registry publication, your package is available for direct use:
+
+```bash
+npm install postgres-connector
+npx postgres-connector
+```
+
+Or in Claude Desktop configuration:
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["postgres-connector"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@host:port/database"
+      }
+    }
+  }
+}
+```
+
+## Updating Your Published Server
+
+### How Updates Work
+- **NPM and MCP registry are separate** - updating one doesn't automatically update the other
+- **Version increments are mandatory** - you cannot republish the same version number
+- **Manual process required** for each update
+
+### Update Workflow
+1. **Make your changes** to the code/documentation
+2. **Update version numbers** in both files:
    ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
+   npm version patch  # Updates package.json automatically
+   # Manually update version in server.json to match
    ```
-
-2. **GitHub Actions will automatically**:
-   - Validate the server.json configuration
-   - Publish the package to NPM
-   - Publish the server to the MCP registry using GitHub OIDC authentication
-
-### Manual Publishing (Fallback)
-If the automated process fails, you can publish manually:
-
-1. **Install MCP Publisher CLI**:
-   ```bash
-   npm install -g @modelcontextprotocol/mcp-publisher
-   ```
-
-2. **Login using GitHub**:
-   ```bash
-   mcp-publisher login github --token YOUR_GITHUB_TOKEN
-   ```
-
-3. **Publish to NPM** (if not done automatically):
+3. **Publish to NPM**:
    ```bash
    npm publish
    ```
-
-4. **Publish to MCP Registry**:
+4. **Republish to MCP registry**:
    ```bash
-   mcp-publisher publish
+   ../registry/bin/mcp-publisher publish
    ```
 
-## Troubleshooting
-
-### Common Issues
-
-1. **NPM_TOKEN not working**: Make sure the token has "Automation" scope and is correctly added to GitHub Secrets
-
-2. **Package name conflicts**: The package name `postgres-connector` might be taken. If so, update both `package.json` and `server.json` with a unique name like `postgres-connector-mcp`
-
-3. **GitHub OIDC authentication fails**: Ensure your repository has the correct permissions set in the workflow file
-
-4. **Validation fails**: Run `npm run validate` locally to check for configuration issues
-
-### Manual Verification
-You can test the configuration locally:
-```bash
-npm run validate
-```
-
-## Next Steps
-
-1. Set up the NPM_TOKEN secret in GitHub
-2. Push your changes to GitHub
-3. Create and push a version tag to trigger the publishing workflow
-4. Monitor the Actions tab in GitHub for the publishing progress
-
-## Configuration Files
-
-- **server.json**: Contains MCP registry metadata including namespace, version, and deployment configuration
-- **GitHub Actions workflow**: Automates the entire publishing process on version tags
-- **package.json**: Updated with proper NPM publishing configuration
-
-The server is configured to use the `io.github.martymarkenson/postgres-connector` namespace, which allows authentication via GitHub OIDC without requiring custom domain verification.
+### Important Notes
+- ⚠️ **Both versions must match** - keep `package.json` and `server.json` versions synchronized
+- ⚠️ **Cannot skip versions** - each publish requires a unique version number
+- ⚠️ **Authentication expires** - you may need to re-login: `../registry/bin/mcp-publisher login github`
