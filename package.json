@@ -1,6 +1,6 @@
 {
   "name": "postgres-connector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mcpName": "io.github.martymarkenson/postgres-connector",
   "description": "An MCP (Model Context Protocol) server for querying PostgreSQL databases. Execute SQL queries, view table details, and manage database connections through MCP-compatible clients.",
   "author": {

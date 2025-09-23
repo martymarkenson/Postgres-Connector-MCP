@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.1",
   "name": "Postgres Connector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ask questions and generate SQL queries for PostgreSQL databases instantly. Set up a connection to your Postgres server, get table schema details, and execute SQL queries.",
   "author": {
     "name": "Marty Markenson",
