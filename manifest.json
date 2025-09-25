@@ -1,7 +1,7 @@
 {
-  "manifest_version": "0.1",
+  "manifest_version": "0.2",
   "name": "Postgres Connector",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Ask questions and generate SQL queries for PostgreSQL databases instantly. Set up a connection to your Postgres server, get table schema details, and execute SQL queries.",
   "author": {
     "name": "Marty Markenson",
@@ -11,11 +11,11 @@
   "icon": "icon.png",
   "server": {
     "type": "node",
-    "entry_point": "src/server.ts",
+    "entry_point": "dist/server.js",
     "mcp_config": {
       "command": "node",
       "args": [
-        "${__dirname}/src/server.ts"
+        "${__dirname}/dist/server.js"
       ],
       "env": {
         "DB_HOST": "${user_config.db_host}",
