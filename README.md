@@ -1,6 +1,9 @@
 # PostgreSQL MCP Server
 <img src="icon.png" alt="Postgres Icon" width="150"/>
 
+<a href="https://glama.ai/mcp/servers/@martymarkenson/Postgres-Connector-MCP">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@martymarkenson/Postgres-Connector-MCP/badge" alt="PostgreSQL Server MCP server" />
+</a>
 
 An MCP (Model Context Protocol) server for querying a PostgreSQL database. Execute SQL queries, view table details, and manage database connections through MCP-compatible clients.
 
